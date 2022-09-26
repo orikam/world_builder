@@ -1,0 +1,15 @@
+{
+    "objects": 
+    [{
+    "name": "grass",
+    "file_name": "img/grass.png",
+    "type": "block",
+    "id": "1"
+    },
+    {
+    "name": "grass",
+    "file_name": "img/grass.png",
+    "type": "block",
+    "id": "2"
+    }]
+}
