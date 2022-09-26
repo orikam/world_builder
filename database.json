@@ -1,15 +1,23 @@
 {
-    "objects": 
-    [{
-    "name": "grass",
-    "file_name": "img/grass.png",
-    "type": "block",
-    "id": "1"
+    "data": {
+      "nb_tiles_width": 16,
+      "nb_tiles_hight": 12,
+      "tile_size": 50,
+      "screen_width": 800,
+      "screen_height": 600
     },
-    {
-    "name": "grass",
-    "file_name": "img/grass.png",
-    "type": "block",
-    "id": "2"
-    }]
-}
+    "objects": [
+      {
+        "name": "grass",
+        "file_name": "img/grass.png",
+        "type": "block",
+        "id": "1"
+      },
+      {
+        "name": "grass",
+        "file_name": "img/grass.png",
+        "type": "block",
+        "id": "2"
+      }
+    ]
+  }
