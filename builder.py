@@ -8,7 +8,7 @@ import map
 from cell import Cell
 from database import Database     
 
-database = Database('database.json') 
+
 
 
 window_size = (800, 600)
@@ -22,7 +22,7 @@ tile_size = 50
 pygame.init()
 print (pygame.display.Info())
 window = pygame.display.set_mode(builder_size)
-
+database = Database('database.json') 
 
 
 

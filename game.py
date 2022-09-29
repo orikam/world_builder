@@ -19,7 +19,7 @@ database = Database('database.json')
 map = Game_map(pygame, pygame.surface.Surface(window_size), window_size, tile_size, (0,0), database)
 map.set(database, 'map.json')
 
-player = Player(pygame, pygame.surface.Surface(window_size), database, map, 100, 100)
+player = Player(pygame, pygame.surface.Surface(window_size), database, map, 100, 100                              )
 run = True
 clock = pygame.time.Clock()
 while run:
@@ -30,7 +30,7 @@ while run:
           
     map.draw(window)
     #print(f'{str(dt)}')
-    player.update(dt/100)
+    player.update(dt)
     player.draw(window)
     pygame.display.update()
 
