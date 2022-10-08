@@ -22,10 +22,10 @@ class Player():
     def update(self, dt):
         rects = []
         dx = 0
-        self.dy += (15 * dt) / 100 
+        self.dy += (15 * dt) / 100
         if self.dy >= (80 * dt) / 100:
             self.dy = (80 * dt) / 100
-        self.dy
+ 
         keys = self.pygame.key.get_pressed()
         if keys[self.pygame.K_LEFT]:
             dx = -(20  * dt) / 100
@@ -35,9 +35,9 @@ class Player():
             if self.jump == False:
                 self.dy = -30 
                 self.jump = True
-
         rects.append(pygame.rect.Rect(self.rect.x + dx, self.rect.y, self.rect.width, self.rect.height))
         rects.append(pygame.rect.Rect(self.rect.x, self.rect.y + self.dy, self.rect.width, self.rect.height))
+        print(f'{dx}),{self.dy}')
         res = self.map.check_collision(rects)
         if res:
             for r in res:
@@ -49,6 +49,9 @@ class Player():
                         if r[2][3]:
                             self.jump = False
                             print('-----')
+                        else:
+                            self.dy = (15 * dt) / 100
+
      
         self.rect.move_ip(dx, self.dy)
 

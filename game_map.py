@@ -12,6 +12,7 @@ class Game_map():
         self.nb_tiles_width = database.nb_tiles_width
         self.nb_tiles_hight = database.nb_tiles_hight
         self.walls = []
+        self.lava = None
 
 
     def draw(self, surface: pygame.Surface):
@@ -24,33 +25,39 @@ class Game_map():
             json_object = json.load(openfile)
             map = json_object['map']
         for index, item in enumerate(map):
-            if item != 0:
+            if item == '1':
                 cell = database.cells[str(item)]
                 img = cell.image
                 rect = img.get_rect()
                 rect.x = (index % self.nb_tiles_width) * self.tile_size
                 rect.y = (index // self.nb_tiles_width) * self.tile_size
-                self.walls.append((index, cell, img, rect))
+                self.walls.append((index, cell, img, rect, None))
+            if item == '2':
+                cell = database.cells[str(item)]
+                img = cell.image
+                rect = img.get_rect()
+                rect.x = (index % self.nb_tiles_width) * self.tile_size
+                rect.y = (index // self.nb_tiles_width) * self.tile_size
+                self.walls.append((index, cell, img, rect, self.lava))
         for cell in self.walls:
             self.surface.blit(cell[2], cell[3])    
 
     def check_collision(self, rects) -> type:
         res = []
-        
         for data in self.walls:
             for index, rect in enumerate(rects):
                 if data[3].colliderect(rect):
                     dir = [None] * 4
-                    if rect.left > data[3].left:
+                    if rect.left >= data[3].left:
                         dir[0] = True # left
-                    if rect.top > data[3].top:
+                    if rect.top >= data[3].top:
                         dir[1] = True # top
-                    if rect.left > data[3].left:
+                    if rect.left <= data[3].left:
                         dir[2] = True # right
-                    if rect.top < data[3].top:
+                    if rect.top <= data[3].top:
                         dir[3] = True
-                    print(f'{str(dir)} + {str(rect)} + {str(data[3])} ')
-                    res.append((Game_map.GAME_TYPE_WALL, index, dir, None))
+                    #print(f'{str(rect)} + {str(data[3])}')
+                    res.append((Game_map.GAME_TYPE_WALL, index, dir, data[3]))
         if len(res):
             return res
         return None

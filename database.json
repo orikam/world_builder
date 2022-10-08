@@ -10,13 +10,13 @@
       {
         "name": "grass",
         "file_name": "img/grass.png",
-        "type": "block",
+        "type": "wall",
         "id": "1"
       },
       {
-        "name": "grass",
-        "file_name": "img/grass.png",
-        "type": "block",
+        "name": "lava",
+        "file_name": "img/lava.png",
+        "type": "kill",
         "id": "2"
       }
     ]
