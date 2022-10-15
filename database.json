@@ -18,6 +18,12 @@
         "file_name": "img/lava.png",
         "type": "kill",
         "id": "2"
+      },
+      {
+        "name": "enemy_1",
+        "file_name": "img/enemy_1.png",
+        "type": "enemy",
+        "id": "3"
       }
     ]
   }

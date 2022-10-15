@@ -18,8 +18,14 @@ class Player():
         self.rect = self.image.get_rect()
         self.rect.center = (self.x, self.y)
         self.jump = False
+        self.death = False
 
     def update(self, dt):
+        if self.death:
+            if self.rect.bottom > 0:
+                self.dy = -(15 * dt) / 100
+                self.rect.move_ip(0, self.dy)
+            return 2
         rects = []
         dx = 0
         self.dy += (15 * dt) / 100
@@ -38,22 +44,29 @@ class Player():
         rects.append(pygame.rect.Rect(self.rect.x + dx, self.rect.y, self.rect.width, self.rect.height))
         rects.append(pygame.rect.Rect(self.rect.x, self.rect.y + self.dy, self.rect.width, self.rect.height))
         print(f'{dx}),{self.dy}')
-        res = self.map.check_collision(rects)
-        if res:
-            for r in res:
-                if r[0] == 1: # wall
-                    if r[1] == 0:
+        objects = self.map.check_collision(rects)
+        if objects:
+            for obj in objects:
+                if obj[0] == 1: # wall
+                    if obj[1] == 0:
                         dx = 0
                     else:
                         self.dy = 0
-                        if r[2][3]:
+                        if obj[2][3]:
                             self.jump = False
                             print('-----')
                         else:
                             self.dy = (15 * dt) / 100
+                damage = obj[4]
+                if damage != None:
+                    self.death = True
+                    self.image =  pygame.image.load('img/dragon_ball.png').convert_alpha()
+                    self.image = pygame.transform.scale(self.image, (50, 50))
+                    return 1
 
      
         self.rect.move_ip(dx, self.dy)
+        return 0
 
 
     def draw(self, surface):

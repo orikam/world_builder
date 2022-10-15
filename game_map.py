@@ -1,5 +1,8 @@
 import pygame
 import json
+import lava
+
+from lava import Lava
 
 class Game_map():
     GAME_TYPE_WALL = 1
@@ -12,7 +15,7 @@ class Game_map():
         self.nb_tiles_width = database.nb_tiles_width
         self.nb_tiles_hight = database.nb_tiles_hight
         self.walls = []
-        self.lava = None
+        self.lava = Lava()
 
 
     def draw(self, surface: pygame.Surface):
@@ -57,7 +60,7 @@ class Game_map():
                     if rect.top <= data[3].top:
                         dir[3] = True
                     #print(f'{str(rect)} + {str(data[3])}')
-                    res.append((Game_map.GAME_TYPE_WALL, index, dir, data[3]))
+                    res.append((Game_map.GAME_TYPE_WALL, index, dir, data[3], data[4]))
         if len(res):
             return res
         return None
