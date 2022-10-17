@@ -9,6 +9,7 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.y = y
         self.type = type
         self.collision = collision
+        self.life = self.type.base_life
     
     def update(self, *args, **kwargs) -> None:
         dx = (self.type.get_dx() * args[0]) / 100
@@ -16,7 +17,7 @@ class Enemy(pygame.sprite.Sprite):
         rects = []
         rects.append(pygame.rect.Rect(self.rect.x + dx, self.rect.y, self.rect.width, self.rect.height))
         rects.append(pygame.rect.Rect(self.rect.x, self.rect.y + dy, self.rect.width, self.rect.height))
-        objects = self.collision(rects)
+        objects = self.collision(rects, ['wall'])
         if objects:
             for obj in objects:
                 if obj[0] == 1: # wall
@@ -27,3 +28,12 @@ class Enemy(pygame.sprite.Sprite):
                         dy = 0
                         self.type.collide(1)
         self.rect.move_ip(dx, dy)
+    
+    def get_damage(self, dir):
+        return self.type.get_damage(dir)
+    
+    def set_damage(self, dir, type, value):
+        res = self.type.set_damage(dir, type, value)
+        self.life = self.life - res
+        if self.life <= 0:
+            self.kill()

@@ -44,7 +44,7 @@ class Player():
         rects.append(pygame.rect.Rect(self.rect.x + dx, self.rect.y, self.rect.width, self.rect.height))
         rects.append(pygame.rect.Rect(self.rect.x, self.rect.y + self.dy, self.rect.width, self.rect.height))
         #print(f'{dx}),{self.dy}')
-        objects = self.map.check_collision(rects)
+        objects = self.map.check_collision(rects, ['wall', 'enemy'])
         if objects:
             for obj in objects:
                 if obj[0] == 1: # wall
@@ -54,14 +54,21 @@ class Player():
                         self.dy = 0
                         if obj[2][3]:
                             self.jump = False
-                            print('-----')
                         else:
                             self.dy = (15 * dt) / 100
-                damage = obj[4]
-                if damage != None:
-                    self.death = True
-                    self.image =  pygame.image.load('img/dragon_ball.png').convert_alpha()
-                    self.image = pygame.transform.scale(self.image, (50, 50))
+                target_obj = obj[4]
+                if target_obj != None:
+                    dir = 0
+                    if obj[1] == 1:
+                        dir = 1
+                    
+                    damage = target_obj.get_damage(dir)
+                    if damage > 0:
+                        self.death = True
+                        self.image =  pygame.image.load('img/dragon_ball.png').convert_alpha()
+                        self.image = pygame.transform.scale(self.image, (50, 50))
+                    else:
+                        target_obj.set_damage(dir, 0, 100)
                     return 1
 
      

@@ -8,6 +8,7 @@ from lava import Lava
 
 class Game_map():
     GAME_TYPE_WALL = 1
+    GAME_TYPE_ENEMY = 2
     def __init__(self, pygame, surface, window_size, tile_size, pos, database) -> None:
         self.pygame = pygame
         self.window_size = window_size
@@ -63,22 +64,39 @@ class Game_map():
         for cell in self.walls:
             self.surface.blit(cell[2], cell[3])    
 
-    def check_collision(self, rects) -> type:
+    def check_collision(self, rects, targets) -> type:
         res = []
-        for data in self.walls:
-            for index, rect in enumerate(rects):
-                if data[3].colliderect(rect):
-                    dir = [None] * 4
-                    if rect.left >= data[3].left:
-                        dir[0] = True # left
-                    if rect.top >= data[3].top:
-                        dir[1] = True # top
-                    if rect.left <= data[3].left:
-                        dir[2] = True # right
-                    if rect.top <= data[3].top:
-                        dir[3] = True
-                    #print(f'{str(rect)} + {str(data[3])}')
-                    res.append((Game_map.GAME_TYPE_WALL, index, dir, data[3], data[4]))
+        for target in targets:
+            if target == 'wall':
+                for data in self.walls:
+                    for index, rect in enumerate(rects):
+                        if data[3].colliderect(rect):
+                            dir = [None] * 4
+                            if rect.left >= data[3].left:
+                                dir[0] = True # left
+                            if rect.top >= data[3].top:
+                                dir[1] = True # top
+                            if rect.left <= data[3].left:
+                                dir[2] = True # right
+                            if rect.top <= data[3].top:
+                                dir[3] = True
+                            #print(f'{str(rect)} + {str(data[3])}')
+                            res.append((Game_map.GAME_TYPE_WALL, index, dir, data[3], data[4]))
+            if target == 'enemy':
+                for enemy in self.enemies:
+                    for index, rect in enumerate(rects):
+                        if enemy.rect.colliderect(rect):
+                            dir = [None] * 4
+                            if rect.left >= enemy.rect.left:
+                                dir[0] = True # left
+                            if rect.top >= enemy.rect.top:
+                                dir[1] = True # top
+                            if rect.left <= enemy.rect.left:
+                                dir[2] = True # right
+                            if rect.top <= enemy.rect.top:
+                                dir[3] = True
+                            #print(f'{str(rect)} + {str(data[3])}')
+                            res.append((Game_map.GAME_TYPE_ENEMY, index, dir, enemy.rect, enemy))
         if len(res):
             return res
         return None
