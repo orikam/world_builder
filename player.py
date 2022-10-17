@@ -6,9 +6,10 @@ from ki_ball import Ki_ball
 
 
 class Player():
-    def __init__(self, pygame, surface, database, map, x, y) -> None:
+    def __init__(self, pygame, database, map, x, y) -> None:
         self.pygame = pygame
-        self.surface = surface
+        self.surface = pygame.surface.Surface((2048, 600), flags = pygame.SRCALPHA)
+        #self.surface.set_alpha(0)
         self.map = map
         self.x = x
         self.y = y
@@ -31,6 +32,8 @@ class Player():
             if self.rect.bottom > 0:
                 self.dy = -(15 * dt) / 100
                 self.rect.move_ip(0, self.dy)
+                self.surface.fill((0,0,0,0))
+                self.surface.blit(self.image, self.rect)
             return 2
         rects = []
         dx = 0
@@ -84,10 +87,16 @@ class Player():
 
      
         self.rect.move_ip(dx, self.dy)
+        self.surface.fill((0,0,0,0))
+        self.surface.blit(self.image, self.rect)
         return 0
 
 
-    def draw(self, surface):
-        surface.blit(self.image, self.rect)
+    def draw(self, surface, offset):
+        surface.blit(self.surface, (0, 0), offset)
+        pass
+
+    def get_offset(self):
+        return self.rect.x
 
         

@@ -15,10 +15,10 @@ print (pygame.display.Info())
 window = pygame.display.set_mode(builder_size)
 database = Database('database.json') 
 
-map = Game_map(pygame, pygame.surface.Surface(window_size), window_size, tile_size, (0,0), database)
+map = Game_map(pygame, window_size, tile_size, (0,0), database)
 map.set(database, 'map.json')
 
-player = Player(pygame, pygame.surface.Surface(window_size), database, map, 100, 100)
+player = Player(pygame, database, map, 100, 100)
 run = 1 # normal run
 clock = pygame.time.Clock()
 
@@ -27,13 +27,19 @@ while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = 0
-    map.update(dt)    
-    map.draw(window)
+   
     #print(f'{str(dt)}')
     res = player.update(dt)
     if res == 1:
         run = 2 # death run
-    player.draw(window)
+    offset = player.get_offset()
+    if offset > 200:
+        offset -= 200
+    else:
+        offset = 0
+    map.update(dt)    
+    map.draw(window, (offset, 0, window_size[0], window_size[1]))
+    player.draw(window, (offset, 0, window_size[0], window_size[1]))
     pygame.display.update()
 
 pygame.quit()

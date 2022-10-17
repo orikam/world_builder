@@ -9,11 +9,12 @@ from lava import Lava
 class Game_map():
     GAME_TYPE_WALL = 1
     GAME_TYPE_ENEMY = 2
-    def __init__(self, pygame, surface, window_size, tile_size, pos, database) -> None:
+    def __init__(self, pygame, window_size, tile_size, pos, database) -> None:
         self.pygame = pygame
         self.window_size = window_size
         self.tile_size = tile_size
-        self.surface = surface
+        self.fixed_surface = pygame.surface.Surface((2048, 600))
+        self.surface = pygame.surface.Surface((2048, 600), flags = pygame.SRCALPHA)
         self.pos = pos
         self.nb_tiles_width = database.nb_tiles_width
         self.nb_tiles_hight = database.nb_tiles_hight
@@ -28,11 +29,12 @@ class Game_map():
         self.enemies.update(dt)
         self.shoots.update(dt)
 
-    def draw(self, surface: pygame.Surface):
-        surface.fill((0, 0, 0))
-        surface.blit(self.surface, (0, 0))
-        self.enemies.draw(surface)
-        self.shoots.draw(surface)
+    def draw(self, surface: pygame.Surface, offset):
+        self.surface.fill((0, 0, 0, 0))
+        self.enemies.draw(self.surface)
+        self.shoots.draw(self.surface)
+        surface.blit(self.fixed_surface, (0, 0), offset)
+        surface.blit(self.surface, (0, 0), offset)
     
     def set(self, database, map_name):
         map = []
@@ -65,7 +67,7 @@ class Game_map():
                 enemy = Enemy(rect.x, rect.y, img, self.enemy_1, self.check_collision)
                 self.enemies.add(enemy)
         for cell in self.walls:
-            self.surface.blit(cell[2], cell[3])    
+            self.fixed_surface.blit(cell[2], cell[3])    
 
     def add_shoot(self, shoot):
         self.shoots.add(shoot)
