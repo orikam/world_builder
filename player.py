@@ -43,7 +43,7 @@ class Player():
                 self.jump = True
         rects.append(pygame.rect.Rect(self.rect.x + dx, self.rect.y, self.rect.width, self.rect.height))
         rects.append(pygame.rect.Rect(self.rect.x, self.rect.y + self.dy, self.rect.width, self.rect.height))
-        print(f'{dx}),{self.dy}')
+        #print(f'{dx}),{self.dy}')
         objects = self.map.check_collision(rects)
         if objects:
             for obj in objects:

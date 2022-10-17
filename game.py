@@ -27,7 +27,7 @@ while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = 0
-          
+    map.update(dt)    
     map.draw(window)
     #print(f'{str(dt)}')
     res = player.update(dt)

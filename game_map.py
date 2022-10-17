@@ -1,5 +1,7 @@
 import pygame
 import json
+from enemy import Enemy
+from enemy_1 import Enemy_1
 import lava
 
 from lava import Lava
@@ -15,11 +17,18 @@ class Game_map():
         self.nb_tiles_width = database.nb_tiles_width
         self.nb_tiles_hight = database.nb_tiles_hight
         self.walls = []
+        self.enemies = pygame.sprite.Group()
         self.lava = Lava()
+        self.enemy_1 = Enemy_1()
 
+
+    def update(self, dt):
+        self.enemies.update(dt)
 
     def draw(self, surface: pygame.Surface):
+        surface.fill((0, 0, 0))
         surface.blit(self.surface, (0, 0))
+        self.enemies.draw(surface)
     
     def set(self, database, map_name):
         map = []
@@ -42,6 +51,15 @@ class Game_map():
                 rect.x = (index % self.nb_tiles_width) * self.tile_size
                 rect.y = (index // self.nb_tiles_width) * self.tile_size
                 self.walls.append((index, cell, img, rect, self.lava))
+            if item == '3':
+                cell = database.cells[str(item)]
+                img = cell.image
+                rect = img.get_rect()
+                rect.x = (index % self.nb_tiles_width) * self.tile_size
+                rect.y = (index // self.nb_tiles_width) * self.tile_size
+                #self.walls.append((index, cell, img, rect, self.lava))
+                enemy = Enemy(rect.x, rect.y, img, self.enemy_1, self.check_collision)
+                self.enemies.add(enemy)
         for cell in self.walls:
             self.surface.blit(cell[2], cell[3])    
 
