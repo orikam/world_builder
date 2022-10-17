@@ -17,16 +17,20 @@ class Enemy(pygame.sprite.Sprite):
         rects = []
         rects.append(pygame.rect.Rect(self.rect.x + dx, self.rect.y, self.rect.width, self.rect.height))
         rects.append(pygame.rect.Rect(self.rect.x, self.rect.y + dy, self.rect.width, self.rect.height))
-        objects = self.collision(rects, ['wall'])
+        collision_list = self.type.get_collision_list()
+        objects = self.collision(rects, collision_list)
         if objects:
             for obj in objects:
+                dir = 0
                 if obj[0] == 1: # wall
                     if obj[1] == 0:
                         dx = 0
-                        self.type.collide(0)
                     else:
+                        dir = 1
                         dy = 0
-                        self.type.collide(1)
+                res = self.type.collide(dir, obj[4])
+                if res == 1:
+                    self.kill()
         self.rect.move_ip(dx, dy)
     
     def get_damage(self, dir):

@@ -21,15 +21,18 @@ class Game_map():
         self.enemies = pygame.sprite.Group()
         self.lava = Lava()
         self.enemy_1 = Enemy_1()
+        self.shoots = pygame.sprite.Group()
 
 
     def update(self, dt):
         self.enemies.update(dt)
+        self.shoots.update(dt)
 
     def draw(self, surface: pygame.Surface):
         surface.fill((0, 0, 0))
         surface.blit(self.surface, (0, 0))
         self.enemies.draw(surface)
+        self.shoots.draw(surface)
     
     def set(self, database, map_name):
         map = []
@@ -63,6 +66,9 @@ class Game_map():
                 self.enemies.add(enemy)
         for cell in self.walls:
             self.surface.blit(cell[2], cell[3])    
+
+    def add_shoot(self, shoot):
+        self.shoots.add(shoot)
 
     def check_collision(self, rects, targets) -> type:
         res = []

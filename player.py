@@ -1,6 +1,9 @@
 
 import pygame
 
+from enemy import Enemy
+from ki_ball import Ki_ball
+
 
 class Player():
     def __init__(self, pygame, surface, database, map, x, y) -> None:
@@ -19,6 +22,9 @@ class Player():
         self.rect.center = (self.x, self.y)
         self.jump = False
         self.death = False
+        self.ki_ball_image = pygame.image.load('img/ki_ball.png').convert_alpha()
+        self.ki_ball_image = pygame.transform.scale(self.ki_ball_image, (25, 25))
+        self.ki_ball = Ki_ball()
 
     def update(self, dt):
         if self.death:
@@ -37,10 +43,15 @@ class Player():
             dx = -(20  * dt) / 100
         if keys[self.pygame.K_RIGHT]:
             dx = (20 * dt) / 100
-        if keys[self.pygame.K_SPACE]:
+        if keys[self.pygame.K_UP]:
             if self.jump == False:
                 self.dy = -30 
                 self.jump = True
+        if keys[self.pygame.K_SPACE]:
+            x = self.rect.x + self.rect.width
+            y = self.rect.y + (self.rect.height / 2)
+            shoot = Enemy(x, y, self.ki_ball_image, self.ki_ball, self.map.check_collision)
+            self.map.add_shoot(shoot)
         rects.append(pygame.rect.Rect(self.rect.x + dx, self.rect.y, self.rect.width, self.rect.height))
         rects.append(pygame.rect.Rect(self.rect.x, self.rect.y + self.dy, self.rect.width, self.rect.height))
         #print(f'{dx}),{self.dy}')

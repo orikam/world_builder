@@ -1,9 +1,9 @@
-class Enemy_1:
+class Ki_ball:
     def __init__(self) -> None:
         self.dx = 20
-        self.dy = 20
+        self.dy = 0
         self.damage = 100
-        self.base_life = 100
+        self.base_life = 0
     
     def get_damage(self) -> int:
         return self.damage
@@ -15,21 +15,15 @@ class Enemy_1:
         return self.dy
 
     def collide(self, dir, target = None):
-        if dir == 0:
-            self.dx = -1 * self.dx
-        return 0
+        if target:
+            target.set_damage(dir, 1, 100)
+        return 1
     
     def get_damage(self, dir):
-        if dir == 0:
-            return self.damage
-        return 0
+        return self.damage
     
     def set_damage(self, dir, type, value):
-        if dir == 1:
-            return 100
-        if type == 1:
-            return value
-        return 0
+        return 100
 
     def get_collision_list(self):
-        return ['wall']
+        return ['wall', 'enemy']
